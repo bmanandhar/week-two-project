@@ -7,6 +7,14 @@ body {
 	border-radius: 2px;
 }
 
+h1 {
+	color: yellow;
+}
+
+h2 {
+	color: green;
+}
+
 body > div {
 	width: 50%;
 	background-color: lightgreen;

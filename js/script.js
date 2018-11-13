@@ -4,6 +4,7 @@ console.log(`JavaScript file works!`);
 var shoppingCart = [];
 var totalItems = 0;
 var totalAmount = 0;
+var cartItems = [];
 // Fruit Items
 var fruitItems = [
 		{
@@ -152,7 +153,8 @@ var candyItems = [
 	}
 ];
 
-var allItems = [fruitItems, ]
+var allItems = [fruitItems, dairyItems, cerealItems, juiceItems, candyItems];
+console.log(allItems);
 
 // Add click handlers to our category buttons
 $('#fruits').click(function() {
@@ -178,14 +180,45 @@ $('#candy').click(function() {
 // Add click handlers to each shopping item
 $('#shopping-items').on('click', '.shopping-item', function() {
 	var itemName = $(this).find('p').text();
-	addItemToShoppingCart(itemName);
-	totalItems += 1; 
-	totalAmount += this.price; //How to display this?
-	console.log(totalItems, totalAmount);
-	$('#no-of-items').text = totalItems; //How to show this value in DOM?
-
+	var item = null;
+	fruitItems.forEach(function(fruit){
+		if (fruit.name === itemName) {
+			item = fruit;
+		}
+	})
+	console.log(item, itemName);
+	// addItemToShoppingCart(itemName);
+	// totalItems += 1; 
+	// console.log(totalAmount, item.price);
+	// totalAmount += item.price; //How to display this?
+	// console.log(totalItems, totalAmount);
+	// $('#items').text = totalItems; //How to show this value in DOM?
+	cartItems.push(item);
+	addItemsToDom(cartItems);	
 });
 
+function addItemsToDom(cartItems){
+	var itemCount = {};
+	var total = 0;
+	cartItems.forEach(function(oneItem){
+		if (!itemCount[oneItem.name]) {
+			itemCount[oneItem.name] = 0;
+		} 
+		itemCount[oneItem.name]++;
+		total += oneItem.price;
+	})
+	$('#items').html("")
+	for (var item in itemCount){
+		$('#items').append(`
+		<li>
+			${item} ${itemCount[item]}
+		</li>
+	`);
+
+	}
+	console.log(itemCount);
+	$('#total').html(total); 
+}
 // Add shopping items to our page
 function addShoppingItems(category) {
 	// first, clear out all items I am currently showing
@@ -220,7 +253,7 @@ function addShoppingItems(category) {
 		newList.append(
 			`<li class="shopping-item">
 				<img src="${currentItem.img}">
-				<p>${currentItem.name}</p>
+				<p>${currentItem.name}</p> 
 			</li>`);
 	}
 
@@ -234,7 +267,7 @@ function clearShoppingItems() {
 
 // Add item to shopping cart
 function addItemToShoppingCart(item) {
-	$('#shopping-cart ul').append(`
+	$('#items').append(`
 		<li>
 			${item}
 		</li>
