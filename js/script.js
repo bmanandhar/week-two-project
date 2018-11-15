@@ -179,10 +179,11 @@ $('#candy').click(function() {
 
 // Add click handlers to each shopping item
 $('#shopping-items').on('click', '.shopping-item', function() {
+	
 	var itemName = $(this).find('p').text();
 	var item = null;
 	fruitItems.forEach(function(fruit){
-		if (fruit.name === itemName) {
+		if (itemName.startsWith(fruit.name)) {
 			item = fruit;
 		}
 	})
@@ -253,7 +254,7 @@ function addShoppingItems(category) {
 		newList.append(
 			`<li class="shopping-item">
 				<img src="${currentItem.img}">
-				<p>${currentItem.name}</p> 
+				<p>${currentItem.name} ${currentItem.price}</p> 
 			</li>`);
 	}
 
